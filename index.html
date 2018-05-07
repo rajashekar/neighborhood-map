@@ -1,10 +1,42 @@
-<html>
+<html !DOCTYPE>
     <head>
         <title>Neighborhood Map</title>
-        <link rel="stylesheet" type="text/css" href="styles/style.css">
+        <!-- Bootstrap CSS CDN -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="styles/style.css">
     </head>
     <body>
-        <div id="map"></div>
+        <div class="wrapper">
+            <nav id="sidebar">
+                 <!-- Sidebar Header -->
+                <div class="sidebar-header">
+                    <h3>BART Locations</h3>
+                </div>
+                <!-- Sidebar Links -->
+                <ul class="list-unstyled components">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Portfolio</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <div id="content">
+                <div class="header">
+                    <div class="sidebarIcon" id="sidebarCollapse">
+                        <div class="bar1"></div>
+                        <div class="bar2"></div>
+                        <div class="bar3"></div>
+                    </div>
+                </div>
+
+                <div id="map"></div>
+            </div>
+        </div>
+        <!-- jQuery CDN -->
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <!-- Bootstrap Js CDN -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="js/app.js"></script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaBvkoo5mlpMp3tpqSUkkmT8XTWROZ9Es&v=3&callback=initMap"></script>
     </body>
