@@ -12,16 +12,17 @@ html, body {
     width: 100%;
     height: 100%;
 }
-.header {
-    display: block;
+.main-content {
     width: 100%;
-    max-width: 100%;
-    box-shadow: none;
-    background-color: #504646;
-    position: fixed;
+}
+.header {
+    background-color: #444040;
     height: 60px!important;
-    overflow: hidden;
-    z-index: 10;
+    width: 100%;
+}
+.sidebar-head-text {
+    text-align: center;
+    color: whitesmoke;
 }
 .wrapper {
     display: flex;
@@ -30,9 +31,37 @@ html, body {
 #sidebar {
     min-width: 250px;
     max-width: 250px;
+    background-color: black;
+    height: 100%;
+    transition: all 0.3s;
+}
+#sidebar .sidebar-header {
+    background: black;
 }
 #sidebar.active {
     margin-left: -250px;
+}
+#sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #47748b;
+}
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+#sidebar ul li a:hover {
+    color: #7386D5;
+    background: #fff;
+}
+#sidebar ul li.active > a, a[aria-expanded="true"] {
+    color: #fff;
+    background: #6d7fcc;
+}
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #6d7fcc;
 }
 @media (max-width: 768px) {
     #sidebar {
@@ -42,7 +71,6 @@ html, body {
         margin-left: 0;
     }
 }
-
 .bar1, .bar2, .bar3 {
     width: 35px;
     height: 5px;
@@ -50,8 +78,13 @@ html, body {
     margin: 6px 0;
     transition: 0.4s;
 }
-
 .sidebarIcon {
     padding-top: 9px;
     padding-left: 25px;
+}
+.search {
+    width: 75%
+}
+.filter {
+    width: 23%
 }
