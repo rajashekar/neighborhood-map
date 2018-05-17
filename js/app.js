@@ -55,7 +55,8 @@ function displayVenues(results) {
             position: {lat: location.lat, lng: location.lng},
             map: map,
             title: results[i].name,
-            id: results[i].id
+            id: results[i].id,
+            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
         });
         viewModel.venues()[i].marker = marker;
         markers.push(marker);
@@ -94,6 +95,9 @@ function populateInfoWindow(data) {
     let marker = data.marker? data.marker : data;
     if(activeInfoWindow) { 
         activeInfoWindow.close();
+        if(activeInfoWindow.marker) {
+            activeInfoWindow.marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+        }
     }
     let infoText = marker.title
     let infowindow = new google.maps.InfoWindow({
@@ -102,9 +106,11 @@ function populateInfoWindow(data) {
     infowindow.setContent('');
     infowindow.marker = marker;
     infowindow.addListener('closeclick',function(){
+        infowindow.marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
         infowindow.marker = null;
     });
     infowindow.setContent('<div>'+marker.title+'</div>');
+    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
     infowindow.open(map, marker);
     activeInfoWindow = infowindow;
 }
