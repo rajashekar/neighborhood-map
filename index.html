@@ -8,22 +8,23 @@
     </head>
     <body>
         <div class="wrapper">
-            <nav id="sidebar">
+            <nav id="sidebar" data-bind="css: {active: !sbar()}">
                  <!-- Sidebar Header -->
                 <div class="sidebar-header">
-                    <h3 class='sidebar-head-text'>Movie Theaters</h3>
+                    <h3 id="appName" class='sidebar-head-text' data-bind="text: appName"></h3>
                 </div>
                 <!-- search -->
-                <input class="search" type="text">
+                <input class="search" type="text" data-bind="value: search">
                 <!-- filter button -->
-                <button class="filter">filter</button>
+                <button class="filter" data-bind="click: onFilter, clickBubble: false">filter</button>
                 <!-- Sidebar Links -->
-                <ul id="results" class="list-unstyled components">
+                <ul data-bind="foreach: venues" id="results" class="list-unstyled components">
+                    <li><a data-bind="text: name, click: $parent.populateInfoWindow"></a></li>
                 </ul>
             </nav>
             <div id="content" class="main-content">
                 <div class="header">
-                    <div class="sidebarIcon" id="sidebarCollapse">
+                    <div class="sidebarIcon" id="sidebarCollapse" data-bind="click: toggle">
                         <div class="bar1"></div>
                         <div class="bar2"></div>
                         <div class="bar3"></div>
@@ -37,6 +38,7 @@
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <!-- Bootstrap Js CDN -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="js/lib/knockout-3.2.0.js"></script>
         <script src="js/app.js"></script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaBvkoo5mlpMp3tpqSUkkmT8XTWROZ9Es&v=3&callback=initMap"></script>
     </body>

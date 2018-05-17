@@ -1,11 +1,16 @@
+// google map api details
 var map;
 var latitude = 37.5482697;
 var longitude = -121.9885719;
-var foursquare_client_id = 'X5KWTNLJAK1RVX23B3JBBKNCG4BPWNQ155WDH34X5Y3T3ARF';
-var foursquare_client_secret = 'FKL3ZKR22ZREWTFJCUH2UA2QQZQFWUKRT1XLHFXDTTJE5GQQ';
+// foursquare api details
+var fq_cli_id = 'X5KWTNLJAK1RVX23B3JBBKNCG4BPWNQ155WDH34X5Y3T3ARF';
+var fq_sec = 'FKL3ZKR22ZREWTFJCUH2UA2QQZQFWUKRT1XLHFXDTTJE5GQQ';
+var fq_url = 'https://api.foursquare.com/v2/venues/search';
+// data
 var venues;
 var markers = [];
 var activeInfoWindow;
+var appName = "Movie Theaters";
 
 function initMap() {
     map = new google.maps.Map(
@@ -17,16 +22,15 @@ function initMap() {
     );
 }
 
-function getFourSquareResults(query) {
-    var fq_url = "https://api.foursquare.com/v2/venues/search?client_id=" + 
-                 foursquare_client_id + 
-                 "&client_secret=" + foursquare_client_secret +
-                 "&v=20130815" + 
-                 "&ll="+latitude + "," + longitude +
-                 "&query=" + query;
+function getFourSquareResults(q) {
+    fq_url = `${fq_url}?client_id=${fq_cli_id}&client_secret=${fq_sec}&v=20130815&ll=${latitude},${longitude}&query=${q}`;
     console.log(fq_url);
-    $.get(fq_url, displayInitialResults);              
+    $.get(fq_url, displayInitialResults).fail(displayError);              
 } 
+
+function displayError() {
+    viewModel.venues([{name: "We are sorry our systems are down, please try again."}]);
+}
 
 function displayInitialResults(data) {
     venues = data.response.venues;
@@ -34,11 +38,11 @@ function displayInitialResults(data) {
     console.log(venues);
     displayVenues(venues);
 }
+
 function displayVenues(results) {
+    viewModel.venues(results);
     // first clear any old markers
     clearMarkers();
-    // display the results in side bar
-    $('#results').html(results.map(x => `<li><a id="${x.id}" href="#">${x.name}</a></li>`));
     // making map markers
     for (let i = 0; i < results.length; i++) {
         let location = results[i].location;
@@ -48,20 +52,13 @@ function displayVenues(results) {
             title: results[i].name,
             id: results[i].id
         });
-        let infoText = results[i].name;
-        let infowindow = new google.maps.InfoWindow({
-            content: infoText
-        });
+        viewModel.venues()[i].marker = marker;
         markers.push(marker);
         marker.addListener('click', function() {
-            populateInfoWindow(this, infowindow)
-        });
-        $(`#${results[i].id}`).on('click', function() {
-            populateInfoWindow(marker, infowindow)
+            populateInfoWindow(this)
         });
     }
 }
-
 
 function clearMarkers() {
     for (var i = 0; i < markers.length; i++) {
@@ -70,7 +67,7 @@ function clearMarkers() {
 }
 
 function onFilter() {
-    var search = $('.search').val();
+    var search = viewModel.search();
     var filtered_results;
     if(search.length > 0) {
         filtered_results = venues.filter(x => x.name.includes(search));
@@ -81,14 +78,19 @@ function onFilter() {
         displayVenues(filtered_results);
     } else {
         displayVenues(filtered_results);
-        $('#results').html('<li><a href="#">No Results Found</a></li>'); 
+        viewModel.venues([{name: "No Results Found"}]);
     }
 }
 
-function populateInfoWindow(marker, infowindow) {
+function populateInfoWindow(data) {
+    let marker = data.marker? data.marker : data;
     if(activeInfoWindow) { 
         activeInfoWindow.close();
     }
+    let infoText = marker.title
+    let infowindow = new google.maps.InfoWindow({
+        content: infoText
+    });
     infowindow.setContent('');
     infowindow.marker = marker;
     infowindow.addListener('closeclick',function(){
@@ -99,10 +101,19 @@ function populateInfoWindow(marker, infowindow) {
     activeInfoWindow = infowindow;
 }
 
-$(document).ready(function () {
-    $('#sidebarCollapse').on('click', function () {
-        $('#sidebar').toggleClass('active');
-    });
-    getFourSquareResults("Movie Theaters");
-    $('.filter').on('click',onFilter);
-});
+// view
+var ViewModel = function() {
+    var self = this;
+    this.appName = appName;
+    this.sbar = ko.observable(true);
+    this.search = ko.observable("");
+    this.venues = ko.observableArray([]);
+    getFourSquareResults(appName);
+    this.populateInfoWindow = populateInfoWindow;
+    this.onFilter = onFilter;
+    this.toggle = function(){
+        this.sbar(!this.sbar());
+    };
+}
+var viewModel = new ViewModel();
+ko.applyBindings(viewModel);
