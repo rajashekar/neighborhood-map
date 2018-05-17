@@ -12,6 +12,7 @@ var markers = [];
 var activeInfoWindow;
 var appName = "Movie Theaters";
 
+// initialize google map
 function initMap() {
     map = new google.maps.Map(
         document.getElementById('map'),
@@ -22,16 +23,19 @@ function initMap() {
     );
 }
 
+// load foursquare results
 function getFourSquareResults(q) {
     fq_url = `${fq_url}?client_id=${fq_cli_id}&client_secret=${fq_sec}&v=20130815&ll=${latitude},${longitude}&query=${q}`;
     console.log(fq_url);
     $.get(fq_url, displayInitialResults).fail(displayError);              
 } 
 
+// on error display message
 function displayError() {
     viewModel.venues([{name: "We are sorry our systems are down, please try again."}]);
 }
 
+// display four square results on map
 function displayInitialResults(data) {
     venues = data.response.venues;
     console.log(data);
@@ -39,6 +43,7 @@ function displayInitialResults(data) {
     displayVenues(venues);
 }
 
+// display venues using markers
 function displayVenues(results) {
     viewModel.venues(results);
     // first clear any old markers
@@ -60,12 +65,14 @@ function displayVenues(results) {
     }
 }
 
+// clear markers
 function clearMarkers() {
     for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
     }
 }
 
+// to filter the results
 function onFilter() {
     var search = viewModel.search();
     var filtered_results;
@@ -82,6 +89,7 @@ function onFilter() {
     }
 }
 
+// On click show info window
 function populateInfoWindow(data) {
     let marker = data.marker? data.marker : data;
     if(activeInfoWindow) { 
@@ -101,7 +109,7 @@ function populateInfoWindow(data) {
     activeInfoWindow = infowindow;
 }
 
-// view
+// View
 var ViewModel = function() {
     var self = this;
     this.appName = appName;
