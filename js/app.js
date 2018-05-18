@@ -113,9 +113,14 @@ function populateInfoWindow(data) {
     });
     infowindow.setContent('<div>'+marker.title+'</div>');
     marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function(){ marker.setAnimation(null); }, 750);
     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
     infowindow.open(map, marker);
     activeInfoWindow = infowindow;
+}
+
+function gm_authFailure() {
+    alert("An error occured while loading map, please try again later.");
 }
 
 // View
