@@ -97,6 +97,7 @@ function populateInfoWindow(data) {
         activeInfoWindow.close();
         if(activeInfoWindow.marker) {
             activeInfoWindow.marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+            activeInfoWindow.marker.setAnimation(null);
         }
     }
     let infoText = marker.title
@@ -107,9 +108,11 @@ function populateInfoWindow(data) {
     infowindow.marker = marker;
     infowindow.addListener('closeclick',function(){
         infowindow.marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+        infowindow.marker.setAnimation(null);
         infowindow.marker = null;
     });
     infowindow.setContent('<div>'+marker.title+'</div>');
+    marker.setAnimation(google.maps.Animation.BOUNCE);
     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
     infowindow.open(map, marker);
     activeInfoWindow = infowindow;
