@@ -56,6 +56,8 @@ function displayVenues(results) {
             map: map,
             title: results[i].name,
             id: results[i].id,
+            category: results[i].categories.length? results[i].categories[0].name : 'Movie Theater',
+            location: results[i].location.formattedAddress[0],
             icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
         });
         viewModel.venues()[i].marker = marker;
@@ -111,7 +113,7 @@ function populateInfoWindow(data) {
         infowindow.marker.setAnimation(null);
         infowindow.marker = null;
     });
-    infowindow.setContent('<div>'+marker.title+'</div>');
+    infowindow.setContent(`<div><b>Name:</b> ${marker.title}</div><div><b>Category:</b> ${marker.category}</div><div><b>Location:</b> ${marker.location}</div>`);
     marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function(){ marker.setAnimation(null); }, 750);
     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
@@ -120,6 +122,10 @@ function populateInfoWindow(data) {
 }
 
 function gm_authFailure() {
+    alert("An error occured while loading map, please try again later.");
+}
+
+function googleError() {
     alert("An error occured while loading map, please try again later.");
 }
 
