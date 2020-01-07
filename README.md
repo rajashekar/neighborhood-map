@@ -1,6 +1,6 @@
 # Neighborhood Map
 
-This project is done as part of Udacity Fullstack Developer course. The purpose of the project is to develop a single page application featuring a map of your neighborhood or a neighborhood you would like to visit. 
+The purpose of the project is to develop a single page application featuring a map of your neighborhood or a neighborhood you would like to visit. 
 
 In this project, Movie Theaters near Fremont, CA location is shown. 
 
